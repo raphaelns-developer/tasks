@@ -9,7 +9,7 @@ import com.todoroo.astrid.api.AstridApiConstants;
 import com.todoroo.astrid.data.SyncFlags;
 import com.todoroo.astrid.data.Task;
 
-import org.tasks.gtasks.SyncAdapterHelper;
+import org.tasks.gtasks.GtaskSyncAdapterHelper;
 import org.tasks.injection.BroadcastComponent;
 import org.tasks.injection.InjectingBroadcastReceiver;
 
@@ -20,13 +20,14 @@ public class GoogleTaskPushReceiver extends InjectingBroadcastReceiver {
     private static final Property<?>[] TASK_PROPERTIES = { Task.ID, Task.TITLE,
             Task.NOTES, Task.DUE_DATE, Task.COMPLETION_DATE, Task.DELETION_DATE };
 
-    @Inject SyncAdapterHelper syncAdapterHelper;
+    @Inject
+    GtaskSyncAdapterHelper gtaskSyncAdapterHelper;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        if(!syncAdapterHelper.isEnabled()) {
+        if(!gtaskSyncAdapterHelper.isEnabled()) {
             return;
         }
 
@@ -39,7 +40,7 @@ public class GoogleTaskPushReceiver extends InjectingBroadcastReceiver {
             return;
         }
         if (checkValuesForProperties(setValues, TASK_PROPERTIES) || model.checkTransitory(SyncFlags.FORCE_SYNC)) {
-            syncAdapterHelper.requestSynchronization();
+            gtaskSyncAdapterHelper.requestSynchronization();
         }
     }
 

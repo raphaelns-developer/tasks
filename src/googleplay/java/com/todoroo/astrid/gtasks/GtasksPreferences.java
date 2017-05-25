@@ -8,7 +8,6 @@ package com.todoroo.astrid.gtasks;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.Preference;
 import android.support.annotation.NonNull;
 
 import com.todoroo.andlib.utility.DateUtilities;
@@ -22,12 +21,13 @@ import org.tasks.analytics.Tracker;
 import org.tasks.analytics.Tracking;
 import org.tasks.dialogs.DialogBuilder;
 import org.tasks.gtasks.GoogleTaskListSelectionHandler;
+import org.tasks.gtasks.GtaskSyncAdapterHelper;
 import org.tasks.gtasks.PlayServicesAvailability;
-import org.tasks.gtasks.SyncAdapterHelper;
 import org.tasks.injection.ActivityComponent;
 import org.tasks.injection.InjectingPreferenceActivity;
 import org.tasks.preferences.ActivityPermissionRequestor;
 import org.tasks.preferences.PermissionRequestor;
+import org.tasks.sync.SyncAdapters;
 
 import javax.inject.Inject;
 
@@ -43,10 +43,11 @@ public class GtasksPreferences extends InjectingPreferenceActivity implements Go
     @Inject ActivityPermissionRequestor permissionRequestor;
     @Inject GtasksListService gtasksListService;
     @Inject Tracker tracker;
-    @Inject SyncAdapterHelper syncAdapterHelper;
+    @Inject GtaskSyncAdapterHelper gtaskSyncAdapterHelper;
     @Inject PlayServicesAvailability playServicesAvailability;
     @Inject DialogBuilder dialogBuilder;
     @Inject MetadataDao metadataDao;
+    @Inject SyncAdapters syncAdapters;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class GtasksPreferences extends InjectingPreferenceActivity implements Go
         addPreferencesFromResource(R.xml.preferences_gtasks);
 
         final CheckBoxPreference gtaskPreference = (CheckBoxPreference) findPreference(getString(R.string.sync_gtasks));
-        gtaskPreference.setChecked(syncAdapterHelper.isEnabled());
+        gtaskPreference.setChecked(gtaskSyncAdapterHelper.isEnabled());
         gtaskPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             if ((boolean) newValue) {
                 if (!playServicesAvailability.refreshAndCheck()) {
@@ -65,7 +66,7 @@ public class GtasksPreferences extends InjectingPreferenceActivity implements Go
                 }
                 return false;
             } else {
-                syncAdapterHelper.enableSynchronization(false);
+                gtaskSyncAdapterHelper.enableSynchronization(false);
                 tracker.reportEvent(Tracking.Events.GTASK_DISABLED);
                 gtasksPreferenceService.stopOngoing();
                 return true;
@@ -77,7 +78,7 @@ public class GtasksPreferences extends InjectingPreferenceActivity implements Go
                             gtasksPreferenceService.getLastSyncDate())));
         }
         findPreference(getString(R.string.gtask_background_sync)).setOnPreferenceChangeListener((preference, o) -> {
-            syncAdapterHelper.enableSynchronization((Boolean) o);
+            gtaskSyncAdapterHelper.enableSynchronization((Boolean) o);
             return true;
         });
         findPreference(getString(R.string.sync_SPr_forget_key)).setOnPreferenceClickListener(preference -> {
@@ -86,7 +87,7 @@ public class GtasksPreferences extends InjectingPreferenceActivity implements Go
                         gtasksPreferenceService.clearLastSyncDate();
                         gtasksPreferenceService.setUserName(null);
                         metadataDao.deleteWhere(Metadata.KEY.eq(GtasksMetadata.METADATA_KEY));
-                        syncAdapterHelper.enableSynchronization(false);
+                        gtaskSyncAdapterHelper.enableSynchronization(false);
                         tracker.reportEvent(Tracking.Events.GTASK_LOGOUT);
                         gtaskPreference.setChecked(false);
                     })
@@ -107,12 +108,12 @@ public class GtasksPreferences extends InjectingPreferenceActivity implements Go
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
 
         CheckBoxPreference backgroundSync = (CheckBoxPreference) findPreference(getString(R.string.gtask_background_sync));
-        backgroundSync.setChecked(syncAdapterHelper.isSyncEnabled());
-        if (syncAdapterHelper.isMasterSyncEnabled()) {
+        backgroundSync.setChecked(gtaskSyncAdapterHelper.isSyncEnabled());
+        if (syncAdapters.isMasterSyncEnabled()) {
             backgroundSync.setSummary(null);
         } else {
             backgroundSync.setSummary(R.string.master_sync_warning);
@@ -124,7 +125,7 @@ public class GtasksPreferences extends InjectingPreferenceActivity implements Go
         if (requestCode == REQUEST_LOGIN) {
             boolean enabled = resultCode == RESULT_OK;
             if (enabled) {
-                syncAdapterHelper.enableSynchronization(true);
+                gtaskSyncAdapterHelper.enableSynchronization(true);
                 tracker.reportEvent(Tracking.Events.GTASK_ENABLED);
             }
             ((CheckBoxPreference) findPreference(getString(R.string.sync_gtasks))).setChecked(enabled);

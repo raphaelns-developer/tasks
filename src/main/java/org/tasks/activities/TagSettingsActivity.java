@@ -194,7 +194,7 @@ public class TagSettingsActivity extends ThemedInjectingAppCompatActivity implem
         } else if (hasChanges()) {
             tagData.setName(newName);
             tagData.setColor(selectedTheme);
-            tagService.rename(tagData.getUuid(), newName);
+            rename(tagData.getUuid(), newName);
             tagDataDao.persist(tagData);
             Metadata m = new Metadata();
             m.setValue(TaskToTagMetadata.TAG_NAME, newName);
@@ -291,5 +291,16 @@ public class TagSettingsActivity extends ThemedInjectingAppCompatActivity implem
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private int rename(String uuid, String newName) {
+        TagData template = new TagData();
+        template.setName(newName);
+        tagDataDao.update(TagData.UUID.eq(uuid), template);
+
+        Metadata metadataTemplate = new Metadata();
+        metadataTemplate.setValue(TaskToTagMetadata.TAG_NAME, newName);
+
+        return metadataDao.update(Criterion.and(MetadataDao.MetadataCriteria.withKey(TaskToTagMetadata.KEY), TaskToTagMetadata.TAG_UUID.eq(uuid)), metadataTemplate);
     }
 }

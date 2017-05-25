@@ -19,7 +19,7 @@ import javax.inject.Inject;
 
 import timber.log.Timber;
 
-public class SyncAdapterHelper {
+public class GtaskSyncAdapterHelper {
 
     private static final String AUTHORITY = "org.tasks";
 
@@ -30,9 +30,9 @@ public class SyncAdapterHelper {
     private final Tracker tracker;
 
     @Inject
-    public SyncAdapterHelper(AccountManager accountManager, Preferences preferences,
-                             GtasksPreferenceService gtasksPreferenceService,
-                             PlayServicesAvailability playServicesAvailability, Tracker tracker) {
+    public GtaskSyncAdapterHelper(AccountManager accountManager, Preferences preferences,
+                                  GtasksPreferenceService gtasksPreferenceService,
+                                  PlayServicesAvailability playServicesAvailability, Tracker tracker) {
         this.accountManager = accountManager;
         this.preferences = preferences;
         this.gtasksPreferenceService = gtasksPreferenceService;
@@ -76,10 +76,6 @@ public class SyncAdapterHelper {
         return preferences.getBoolean(R.string.sync_gtasks, false) &&
                 playServicesAvailability.isPlayServicesAvailable() &&
                 getAccount() != null;
-    }
-
-    public boolean isMasterSyncEnabled() {
-        return ContentResolver.getMasterSyncAutomatically();
     }
 
     public void enableSynchronization(boolean enabled) {

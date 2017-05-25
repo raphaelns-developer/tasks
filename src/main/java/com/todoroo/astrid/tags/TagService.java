@@ -154,15 +154,4 @@ public final class TagService {
                 MetadataCriteria.withKey(TaskToTagMetadata.KEY), TaskToTagMetadata.TAG_NAME.eqCaseInsensitive(tag),
                 additionalCriterion);
     }
-
-    public int rename(String uuid, String newName) {
-        TagData template = new TagData();
-        template.setName(newName);
-        tagDataDao.update(TagData.UUID.eq(uuid), template);
-
-        Metadata metadataTemplate = new Metadata();
-        metadataTemplate.setValue(TaskToTagMetadata.TAG_NAME, newName);
-
-        return metadataDao.update(Criterion.and(MetadataCriteria.withKey(TaskToTagMetadata.KEY), TaskToTagMetadata.TAG_UUID.eq(uuid)), metadataTemplate);
-    }
 }

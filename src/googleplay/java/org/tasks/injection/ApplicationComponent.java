@@ -9,8 +9,6 @@ import dagger.Component;
 @ApplicationScope
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
-    SyncAdapterComponent plus(SyncAdapterModule syncAdapterModule);
-
     void inject(DashClockExtension dashClockExtension);
 
     void inject(Tasks tasks);
@@ -22,4 +20,6 @@ public interface ApplicationComponent {
     BroadcastComponent plus(BroadcastModule module);
 
     IntentServiceComponent plus(IntentServiceModule module);
+
+    SyncAdapterComponent plus(SyncAdapterModule syncAdapterModule);
 }

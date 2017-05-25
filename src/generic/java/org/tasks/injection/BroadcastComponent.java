@@ -9,6 +9,7 @@ import com.todoroo.astrid.timers.TimerTaskCompleteListener;
 
 import org.tasks.locale.receiver.FireReceiver;
 import org.tasks.receivers.BootCompletedReceiver;
+import org.tasks.receivers.CalDAVPushReceiver;
 import org.tasks.receivers.CompleteTaskReceiver;
 import org.tasks.receivers.ListNotificationReceiver;
 import org.tasks.receivers.MyPackageReplacedReceiver;
@@ -44,4 +45,6 @@ public interface BroadcastComponent {
     void inject(TasksWidget tasksWidget);
 
     void inject(TeslaUnreadReceiver teslaUnreadReceiver);
+
+    void inject(CalDAVPushReceiver calDAVPushReceiver);
 }

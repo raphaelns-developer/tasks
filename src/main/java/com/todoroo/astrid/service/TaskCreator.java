@@ -18,6 +18,7 @@ import com.todoroo.astrid.data.TagData;
 import com.todoroo.astrid.data.Task;
 import com.todoroo.astrid.gcal.GCalHelper;
 import com.todoroo.astrid.tags.TagService;
+import com.todoroo.astrid.tags.CaldavMetadata;
 import com.todoroo.astrid.tags.TaskToTagMetadata;
 import com.todoroo.astrid.utility.TitleParser;
 
@@ -133,6 +134,10 @@ public class TaskCreator {
                     // This is necessary for backwards compatibility
                     createLink(task, metadata.getValue(TaskToTagMetadata.TAG_NAME));
                 }
+            } else if (CaldavMetadata.KEY.equals(metadata.getKey())) {
+                if (metadata.containsNonNullValue(CaldavMetadata.CALDAV_UUID) && !RemoteModel.NO_UUID.equals(metadata.getValue(CaldavMetadata.CALDAV_UUID))) {
+                    createCaldavLink(task, metadata.getValue(CaldavMetadata.CALDAV_NAME), metadata.getValue(CaldavMetadata.CALDAV_UUID));
+                }
             } else {
                 metadataDao.persist(metadata);
             }
@@ -159,6 +164,14 @@ public class TaskCreator {
         Metadata link = TaskToTagMetadata.newTagMetadata(task.getId(), task.getUuid(), tagName, tagUuid);
         if (metadataDao.update(Criterion.and(MetadataDao.MetadataCriteria.byTaskAndwithKey(task.getId(), TaskToTagMetadata.KEY),
                 TaskToTagMetadata.TASK_UUID.eq(task.getUUID()), TaskToTagMetadata.TAG_UUID.eq(tagUuid)), link) <= 0) {
+            metadataDao.createNew(link);
+        }
+    }
+
+    private void createCaldavLink(Task task, String caldavName, String caldavUuid) {
+        Metadata link = CaldavMetadata.newCaldavMetadata(task.getId(), task.getUuid(), caldavName, caldavUuid);
+        if (metadataDao.update(Criterion.and(MetadataDao.MetadataCriteria.byTaskAndwithKey(task.getId(), CaldavMetadata.KEY),
+                CaldavMetadata.TASK_UUID.eq(task.getUUID()), CaldavMetadata.CALDAV_UUID.eq(caldavUuid)), link) <= 0) {
             metadataDao.createNew(link);
         }
     }

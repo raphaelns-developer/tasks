@@ -27,6 +27,7 @@ import com.todoroo.astrid.core.CustomFilterActivity;
 import org.tasks.R;
 import org.tasks.activities.GoogleTaskListSettingsActivity;
 import org.tasks.activities.TagSettingsActivity;
+import org.tasks.caldav.CalDAVSettingsActivity;
 import org.tasks.filters.FilterCounter;
 import org.tasks.filters.FilterProvider;
 import org.tasks.filters.NavigationDrawerAction;
@@ -246,6 +247,17 @@ public class FilterAdapter extends ArrayAdapter<FilterListItem> {
                         new Intent(activity, GoogleTaskListSettingsActivity.class),
                         NavigationDrawerFragment.REQUEST_NEW_GTASK_LIST));
             }
+        }
+
+        List<Filter> calDAVFilters = filterProvider.getCalDAVFilters();
+        addSubMenu(R.string.CalDAV, calDAVFilters, false);
+
+        if (navigationDrawer) {
+            add(new NavigationDrawerAction(
+                    activity.getResources().getString(R.string.add_account),
+                    R.drawable.ic_add_24dp,
+                    new Intent(activity, CalDAVSettingsActivity.class),
+                    NavigationDrawerFragment.REQUEST_NEW_CALDAV_ACCOUNT));
         }
 
         if (navigationDrawer) {

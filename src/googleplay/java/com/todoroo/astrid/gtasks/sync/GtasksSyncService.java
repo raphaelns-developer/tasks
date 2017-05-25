@@ -26,7 +26,7 @@ import com.todoroo.astrid.gtasks.api.GtasksInvoker;
 import com.todoroo.astrid.gtasks.api.MoveRequest;
 
 import org.tasks.analytics.Tracker;
-import org.tasks.gtasks.SyncAdapterHelper;
+import org.tasks.gtasks.GtaskSyncAdapterHelper;
 import org.tasks.injection.ApplicationScope;
 
 import java.io.IOException;
@@ -47,19 +47,19 @@ public class GtasksSyncService {
     private final GtasksPreferenceService gtasksPreferenceService;
     private final GtasksInvoker gtasksInvoker;
     private final LinkedBlockingQueue<SyncOnSaveOperation> operationQueue = new LinkedBlockingQueue<>();
-    private final SyncAdapterHelper syncAdapterHelper;
+    private final GtaskSyncAdapterHelper gtaskSyncAdapterHelper;
     private final Tracker tracker;
 
     @Inject
     public GtasksSyncService(MetadataDao metadataDao, TaskDao taskDao,
                              GtasksPreferenceService gtasksPreferenceService,
                              GtasksInvoker gtasksInvoker,
-                             SyncAdapterHelper syncAdapterHelper, Tracker tracker) {
+                             GtaskSyncAdapterHelper gtaskSyncAdapterHelper, Tracker tracker) {
         this.metadataDao = metadataDao;
         this.taskDao = taskDao;
         this.gtasksPreferenceService = gtasksPreferenceService;
         this.gtasksInvoker = gtasksInvoker;
-        this.syncAdapterHelper = syncAdapterHelper;
+        this.gtaskSyncAdapterHelper = gtaskSyncAdapterHelper;
         this.tracker = tracker;
         new OperationPushThread(operationQueue).start();
     }
@@ -142,7 +142,7 @@ public class GtasksSyncService {
         {
             return;
         }
-        if (!syncAdapterHelper.isEnabled()) {
+        if (!gtaskSyncAdapterHelper.isEnabled()) {
             return;
         }
 

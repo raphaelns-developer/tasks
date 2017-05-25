@@ -54,11 +54,11 @@ import org.tasks.analytics.Tracking;
 import org.tasks.data.TaskListDataProvider;
 import org.tasks.dialogs.DialogBuilder;
 import org.tasks.dialogs.SortDialog;
-import org.tasks.gtasks.SyncAdapterHelper;
 import org.tasks.injection.ForActivity;
 import org.tasks.injection.FragmentComponent;
 import org.tasks.injection.InjectingFragment;
 import org.tasks.preferences.Preferences;
+import org.tasks.sync.SyncAdapters;
 import org.tasks.tasklist.TaskListRecyclerAdapter;
 import org.tasks.tasklist.ViewHolderFactory;
 import org.tasks.ui.CheckBoxes;
@@ -100,7 +100,7 @@ public class TaskListFragment extends InjectingFragment implements
 
     // --- instance variables
 
-    @Inject SyncAdapterHelper syncAdapterHelper;
+    @Inject SyncAdapters syncAdapters;
     @Inject TaskDeleter taskDeleter;
     @Inject TaskDuplicator taskDuplicator;
     @Inject @ForActivity Context context;
@@ -137,7 +137,7 @@ public class TaskListFragment extends InjectingFragment implements
 
     @Override
     public void onRefresh() {
-        if (!syncAdapterHelper.initiateManualSync()) {
+        if (!syncAdapters.initiateManualSync()) {
             refresh();
         }
     }
@@ -482,7 +482,7 @@ public class TaskListFragment extends InjectingFragment implements
         for (Task task : tasks) {
             onTaskCreated(task.getUuid());
         }
-        syncAdapterHelper.requestSynchronization();
+        syncAdapters.requestSynchronization();
     }
 
     public void onTaskCreated(String uuid) {

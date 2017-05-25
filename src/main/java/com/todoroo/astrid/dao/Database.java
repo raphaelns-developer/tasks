@@ -19,6 +19,7 @@ import com.todoroo.andlib.data.Property;
 import com.todoroo.andlib.data.SqlConstructorVisitor;
 import com.todoroo.andlib.data.Table;
 import com.todoroo.andlib.utility.AndroidUtilities;
+import com.todoroo.astrid.data.CaldavAccount;
 import com.todoroo.astrid.data.Metadata;
 import com.todoroo.astrid.data.StoreObject;
 import com.todoroo.astrid.data.TagData;
@@ -46,7 +47,7 @@ import timber.log.Timber;
 @ApplicationScope
 public class Database {
 
-    private static final int VERSION = 38;
+    private static final int VERSION = 39;
     private static final String NAME = "database";
     private static final Table[] TABLES =  new Table[] {
             Task.TABLE,
@@ -56,6 +57,7 @@ public class Database {
             UserActivity.TABLE,
             TaskAttachment.TABLE,
             TaskListMetadata.TABLE,
+            CaldavAccount.TABLE
     };
 
     private final SQLiteOpenHelper helper;
@@ -123,6 +125,8 @@ public class Database {
                 tryExecSQL(addColumnSql(StoreObject.TABLE, StoreObject.DELETION_DATE, visitor, "0"));
             case 37:
                 tryExecSQL(addColumnSql(StoreObject.TABLE, StoreObject.VALUE4, visitor, "-1"));
+            case 38:
+                tryExecSQL(createTableSql(visitor, CaldavAccount.TABLE.name, CaldavAccount.PROPERTIES));
                 return true;
         }
 
@@ -164,7 +168,7 @@ public class Database {
         }
     }
 
-    private String createTableSql(SqlConstructorVisitor visitor,
+    private static String createTableSql(SqlConstructorVisitor visitor,
             String tableName, Property<?>[] properties) {
         StringBuilder sql = new StringBuilder();
         sql.append("CREATE TABLE IF NOT EXISTS ").append(tableName).append('(').

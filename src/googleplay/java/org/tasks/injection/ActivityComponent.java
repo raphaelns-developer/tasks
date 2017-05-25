@@ -23,6 +23,7 @@ import org.tasks.activities.FilterSettingsActivity;
 import org.tasks.activities.GoogleTaskListSettingsActivity;
 import org.tasks.activities.TagSettingsActivity;
 import org.tasks.activities.TimePickerActivity;
+import org.tasks.caldav.CalDAVSettingsActivity;
 import org.tasks.dashclock.DashClockSettings;
 import org.tasks.files.FileExplore;
 import org.tasks.files.MyFilePickerActivity;
@@ -127,4 +128,6 @@ public interface ActivityComponent {
     void inject(BasicPreferences basicPreferences);
 
     void inject(GoogleTaskListSettingsActivity googleTaskListSettingsActivity);
+
+    void inject(CalDAVSettingsActivity calDAVSettingsActivity);
 }

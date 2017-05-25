@@ -25,8 +25,8 @@ import com.todoroo.astrid.tags.TagService;
 import com.todoroo.astrid.tags.TaskToTagMetadata;
 
 import org.tasks.R;
-import org.tasks.gtasks.SyncAdapterHelper;
 import org.tasks.injection.ForApplication;
+import org.tasks.sync.SyncAdapters;
 
 import java.util.List;
 
@@ -50,17 +50,17 @@ public class FilterCriteriaProvider {
     private final GtasksListService gtasksListService;
     private final GtasksMetadata gtasksMetadata;
     private final Resources r;
-    private final SyncAdapterHelper syncAdapterHelper;
+    private final SyncAdapters syncAdapters;
 
     @Inject
     public FilterCriteriaProvider(@ForApplication Context context, TagService tagService,
                                   GtasksListService gtasksListService,
-                                  GtasksMetadata gtasksMetadata, SyncAdapterHelper syncAdapterHelper) {
+                                  GtasksMetadata gtasksMetadata, SyncAdapters syncAdapters) {
         this.context = context;
         this.tagService = tagService;
         this.gtasksListService = gtasksListService;
         this.gtasksMetadata = gtasksMetadata;
-        this.syncAdapterHelper = syncAdapterHelper;
+        this.syncAdapters = syncAdapters;
 
         r = context.getResources();
     }
@@ -73,7 +73,7 @@ public class FilterCriteriaProvider {
         result.add(getDueDateFilter());
         result.add(getImportanceFilter());
         result.add(getTaskTitleContainsFilter());
-        if (syncAdapterHelper.isEnabled()) {
+        if (syncAdapters.isGoogleTaskEnabled()) {
             result.add(getGtasksFilterCriteria());
         }
 

@@ -11,9 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.view.ActionMode;
@@ -23,13 +21,16 @@ import android.widget.FrameLayout;
 
 import com.todoroo.andlib.utility.AndroidUtilities;
 import com.todoroo.astrid.api.AstridApiConstants;
+import com.todoroo.astrid.api.CaldavFilter;
 import com.todoroo.astrid.api.Filter;
 import com.todoroo.astrid.api.FilterListItem;
 import com.todoroo.astrid.api.GtasksFilter;
 import com.todoroo.astrid.api.PermaSql;
 import com.todoroo.astrid.api.TagFilter;
+import com.todoroo.astrid.dao.CaldavDao;
 import com.todoroo.astrid.dao.TagDataDao;
 import com.todoroo.astrid.dao.TaskDao;
+import com.todoroo.astrid.data.CaldavAccount;
 import com.todoroo.astrid.data.TagData;
 import com.todoroo.astrid.data.Task;
 import com.todoroo.astrid.gtasks.GtasksList;
@@ -47,16 +48,17 @@ import org.tasks.R;
 import org.tasks.activities.TagSettingsActivity;
 import org.tasks.analytics.Tracker;
 import org.tasks.analytics.Tracking;
+import org.tasks.caldav.CaldavListFragment;
 import org.tasks.dialogs.SortDialog;
 import org.tasks.fragments.CommentBarFragment;
 import org.tasks.gtasks.GoogleTaskListSelectionHandler;
-import org.tasks.gtasks.SyncAdapterHelper;
 import org.tasks.injection.ActivityComponent;
 import org.tasks.injection.InjectingAppCompatActivity;
 import org.tasks.intents.TaskIntents;
 import org.tasks.preferences.DefaultFilterProvider;
 import org.tasks.preferences.Preferences;
 import org.tasks.receivers.RepeatConfirmationReceiver;
+import org.tasks.sync.SyncAdapters;
 import org.tasks.tasklist.GtasksListFragment;
 import org.tasks.tasklist.TagListFragment;
 import org.tasks.themes.Theme;
@@ -97,10 +99,11 @@ public class TaskListActivity extends InjectingAppCompatActivity implements
     @Inject Theme theme;
     @Inject Broadcaster broadcaster;
     @Inject ThemeCache themeCache;
-    @Inject SyncAdapterHelper syncAdapterHelper;
+    @Inject SyncAdapters syncAdapters;
     @Inject Tracker tracker;
     @Inject TaskCreator taskCreator;
     @Inject TaskDao taskDao;
+    @Inject CaldavDao caldavDao;
 
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.master) FrameLayout master;
@@ -266,7 +269,7 @@ public class TaskListActivity extends InjectingAppCompatActivity implements
                 repeatConfirmationReceiver,
                 new IntentFilter(AstridApiConstants.BROADCAST_EVENT_TASK_REPEATED));
 
-        syncAdapterHelper.checkPlayServices(getTaskListFragment());
+        syncAdapters.checkPlayServices(getTaskListFragment());
     }
 
     public void restart() {
@@ -325,6 +328,12 @@ public class TaskListActivity extends InjectingAppCompatActivity implements
                 return preferences.getBoolean(R.string.p_manual_sort, false)
                         ? GtasksSubtaskListFragment.newGtasksSubtaskListFragment(gtasksFilter, list)
                         : GtasksListFragment.newGtasksListFragment(gtasksFilter, list);
+            }
+        } else if (filter instanceof CaldavFilter) {
+            CaldavFilter caldavFilter = (CaldavFilter) filter;
+            CaldavAccount account = caldavDao.getByUuid(caldavFilter.getUuid());
+            if (account != null) {
+                return CaldavListFragment.newCaldavListFragment(caldavFilter, account);
             }
         } else if (filter != null) {
             return subtasksHelper.shouldUseSubtasksFragmentForFilter(filter)
