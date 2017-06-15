@@ -15,6 +15,7 @@ import org.tasks.injection.SyncAdapterComponent;
 
 import javax.inject.Inject;
 
+import okhttp3.OkHttpClient;
 import timber.log.Timber;
 
 public class CalDAVSyncAdapter extends InjectingAbstractThreadedSyncAdapter {
@@ -30,16 +31,20 @@ public class CalDAVSyncAdapter extends InjectingAbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Timber.d("onPerformSync: " + account.name);
-        CaldavAccount accountByName = caldavDao.getAccountByName(account.name);
-        if (accountByName == null) {
-            accountByName = new CaldavAccount();
-            accountByName.setName(account.name);
-            caldavDao.createNew(accountByName);
+        CaldavAccount caldavAccount = caldavDao.getAccountByName(account.name);
+        if (caldavAccount == null) {
+            caldavAccount = new CaldavAccount();
+            caldavAccount.setName(account.name);
+            caldavDao.createNew(caldavAccount);
             broadcaster.refreshLists();
-        } else if (accountByName.isDeleted()) {
+        } else if (caldavAccount.isDeleted()) {
             caldavAccountManager.removeAccount(account);
             return;
         }
+        org.tasks.caldav.Account localAccount = caldavAccountManager.getAccount(account.name);
+        OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
+        builder.addInterceptor(new BasicAuthInterceptor(localAccount.getUsername(), localAccount.getPassword()));
+
         Timber.d("perform sync");
         // TODO: perform sync
     }

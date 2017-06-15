@@ -4,6 +4,7 @@ import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OnAccountsUpdateListener;
 import android.accounts.OperationCanceledException;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -37,9 +38,9 @@ import static com.google.common.collect.Iterables.tryFind;
 @ApplicationScope
 public class CaldavAccountManager implements OnAccountsUpdateListener {
 
+    private static final String AUTHORITY = "org.tasks";
     public static final String ACCOUNT_TYPE = "org.tasks.caldav";
 
-    private final Context context;
     private final PermissionChecker permissionChecker;
     private final android.accounts.AccountManager accountManager;
     private final TaskListDataProvider taskListDataProvider;
@@ -52,7 +53,6 @@ public class CaldavAccountManager implements OnAccountsUpdateListener {
     public CaldavAccountManager(@ForApplication Context context, PermissionChecker permissionChecker,
                                 CaldavDao caldavDao, TaskListDataProvider taskListDataProvider,
                                 TaskDeleter taskDeleter, MetadataDao metadataDao, Broadcaster broadcaster) {
-        this.context = context;
         this.permissionChecker = permissionChecker;
         this.caldavDao = caldavDao;
         this.taskListDataProvider = taskListDataProvider;
@@ -149,5 +149,21 @@ public class CaldavAccountManager implements OnAccountsUpdateListener {
                 });
         caldavDao.delete(account.getId());
         broadcaster.refreshLists();
+    }
+
+    public boolean initiateManualSync() {
+        for (org.tasks.caldav.Account account : getAccounts()) {
+            Bundle extras = new Bundle();
+            extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+            extras.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+            ContentResolver.requestSync(account.getAccount(), AUTHORITY, extras);
+        }
+        return true;
+    }
+
+    public void requestSynchronization() {
+        for (org.tasks.caldav.Account account : getAccounts()) {
+            ContentResolver.requestSync(account.getAccount(), AUTHORITY, new Bundle());
+        }
     }
 }

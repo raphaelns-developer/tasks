@@ -7,7 +7,7 @@ import com.todoroo.astrid.api.AstridApiConstants;
 import com.todoroo.astrid.data.SyncFlags;
 import com.todoroo.astrid.data.Task;
 
-import org.tasks.caldav.CaldavSyncAdapterHelper;
+import org.tasks.caldav.CaldavAccountManager;
 import org.tasks.injection.BroadcastComponent;
 import org.tasks.injection.InjectingBroadcastReceiver;
 
@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 public class CalDAVPushReceiver extends InjectingBroadcastReceiver {
 
-    @Inject CaldavSyncAdapterHelper syncAdapterHelper;
+    @Inject CaldavAccountManager caldavAccountManager;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -28,7 +28,7 @@ public class CalDAVPushReceiver extends InjectingBroadcastReceiver {
         if(model.checkTransitory(SyncFlags.GTASKS_SUPPRESS_SYNC)) {
             return;
         }
-        syncAdapterHelper.requestSynchronization();
+        caldavAccountManager.requestSynchronization();
     }
 
     @Override

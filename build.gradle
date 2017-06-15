@@ -115,6 +115,8 @@ dependencies {
     //noinspection GradleCompatible
     debugCompile 'com.android.support:multidex:1.0.1'
 
+    compile 'com.squareup.okhttp3:okhttp:3.8.0'
+
     compile 'com.github.rey5137:material:1.2.4'
     compile 'com.nononsenseapps:filepicker:4.0.0'
     compile "com.android.support:design:${SUPPORT_VERSION}"
