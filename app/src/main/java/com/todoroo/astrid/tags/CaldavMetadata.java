@@ -1,7 +1,10 @@
 package com.todoroo.astrid.tags;
 
+import com.todoroo.andlib.data.Property;
 import com.todoroo.andlib.data.Property.StringProperty;
 import com.todoroo.astrid.data.Metadata;
+
+import java.util.UUID;
 
 public class CaldavMetadata {
 
@@ -19,6 +22,8 @@ public class CaldavMetadata {
     public static final StringProperty TASK_UUID = new StringProperty(
             Metadata.TABLE, Metadata.VALUE3.name);
 
+    public static final Property.LongProperty LAST_SYNC = new Property.LongProperty(Metadata.TABLE,
+            Metadata.VALUE7.name);
 
     // Creation date and deletion date are already included as part of the normal metadata entity
 
@@ -27,14 +32,9 @@ public class CaldavMetadata {
      * object should be saved and have the uuid property. All parameters
      * are manditory
      */
-    public static Metadata newCaldavMetadata(long taskId, String taskUuid, String caldavName, String caldavUuid) {
+    public static Metadata newCaldavMetadata() {
         Metadata link = new Metadata();
         link.setKey(KEY);
-        link.setTask(taskId);
-        link.setValue(CALDAV_NAME, caldavName);
-        link.setValue(TASK_UUID, taskUuid);
-        link.setValue(CALDAV_UUID, caldavUuid);
-        link.setDeletionDate(0L);
         return link;
     }
 }

@@ -531,6 +531,10 @@ public class Task extends RemoteModel {
         setValue(MODIFICATION_DATE, modificationDate);
     }
 
+    public Long getModificationDate() {
+        return getValue(MODIFICATION_DATE);
+    }
+
     public Integer getReminderFlags() {
         return getValue(REMINDER_FLAGS);
     }

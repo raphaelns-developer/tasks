@@ -4,22 +4,24 @@ import android.content.ContentResolver;
 
 import com.todoroo.astrid.activity.TaskListFragment;
 
+import org.tasks.caldav.CaldavAccountManager;
+
 import javax.inject.Inject;
 
 public class SyncAdapters {
-    private CaldavSyncAdapterHelper caldavSyncAdapterHelper;
+    private CaldavAccountManager caldavAccountManager;
 
     @Inject
-    public SyncAdapters(CaldavSyncAdapterHelper caldavSyncAdapterHelper) {
-        this.caldavSyncAdapterHelper = caldavSyncAdapterHelper;
+    public SyncAdapters(CaldavAccountManager caldavAccountManager) {
+        this.caldavAccountManager = caldavAccountManager;
     }
 
     public boolean initiateManualSync() {
-        return caldavSyncAdapterHelper.initiateManualSync();
+        return caldavAccountManager.initiateManualSync();
     }
 
     public void requestSynchronization() {
-        caldavSyncAdapterHelper.requestSynchronization();
+        caldavAccountManager.requestSynchronization();
     }
 
     public boolean isGoogleTaskEnabled() {

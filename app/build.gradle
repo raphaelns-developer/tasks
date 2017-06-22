@@ -13,7 +13,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha3'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha4'
     }
 }
 
@@ -101,6 +101,9 @@ final STETHO_VERSION = '1.4.2'
 final TESTING_SUPPORT_VERSION = '0.5'
 
 dependencies {
+    compile project(':ical4android')
+    compile project(':dav4android')
+
     annotationProcessor "com.google.dagger:dagger-compiler:${DAGGER_VERSION}"
     compile "com.google.dagger:dagger:${DAGGER_VERSION}"
 

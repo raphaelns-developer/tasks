@@ -4,9 +4,9 @@ import android.content.ContentValues;
 import android.os.Parcel;
 
 import com.todoroo.andlib.sql.Criterion;
-import com.todoroo.andlib.sql.Field;
 import com.todoroo.andlib.sql.Join;
 import com.todoroo.andlib.sql.QueryTemplate;
+import com.todoroo.astrid.dao.MetadataDao;
 import com.todoroo.astrid.dao.TaskDao;
 import com.todoroo.astrid.data.CaldavAccount;
 import com.todoroo.astrid.data.Metadata;
@@ -26,7 +26,7 @@ public class CaldavFilter extends Filter {
     }
 
     public CaldavFilter(CaldavAccount caldavAccount) {
-        super(caldavAccount.getName(), queryTemplate(caldavAccount.getUuid()), getValuesForNewTask(caldavAccount));
+        super(caldavAccount.getName(), queryTemplate(caldavAccount.getName()), getValuesForNewTask(caldavAccount));
         uuid = caldavAccount.getUuid();
         tint = caldavAccount.getColor();
         icon = TAG;
@@ -36,21 +36,19 @@ public class CaldavFilter extends Filter {
         return uuid;
     }
 
-    private static QueryTemplate queryTemplate(String uuid) {
+    private static QueryTemplate queryTemplate(String caldavName) {
         Criterion fullCriterion = Criterion.and(
-                Field.field("mtags." + Metadata.KEY.name).eq(CaldavMetadata.KEY),
-                Field.field("mtags." + CaldavMetadata.CALDAV_UUID.name).eq(uuid),
-                Field.field("mtags." + Metadata.DELETION_DATE.name).eq(0),
-                TaskDao.TaskCriteria.activeAndVisible());
-        return new QueryTemplate().join(Join.inner(Metadata.TABLE.as("mtags"), Task.UUID.eq(Field.field("mtags." + CaldavMetadata.TASK_UUID.name))))
+                MetadataDao.MetadataCriteria.withKey(CaldavMetadata.KEY),
+                TaskDao.TaskCriteria.activeAndVisible(),
+                CaldavMetadata.CALDAV_NAME.eq(caldavName));
+        return new QueryTemplate().join(Join.left(Metadata.TABLE, Task.ID.eq(Metadata.TASK)))
                 .where(fullCriterion);
     }
 
     private static ContentValues getValuesForNewTask(CaldavAccount caldavAccount) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Metadata.KEY.name, CaldavMetadata.KEY);
+        contentValues.putAll(CaldavMetadata.newCaldavMetadata().getMergedValues());
         contentValues.put(CaldavMetadata.CALDAV_NAME.name, caldavAccount.getName());
-        contentValues.put(CaldavMetadata.CALDAV_UUID.name, caldavAccount.getUuid());
         return contentValues;
     }
 
