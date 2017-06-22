@@ -26,4 +26,11 @@ public class CalDAVFilterExposer {
         }
         return result;
     }
+
+    public Filter getFilterByUuid(String uuid) {
+        CaldavAccount caldavAccount = caldavDao.getByUuid(uuid);
+        return caldavAccount == null
+                ? null
+                : new CaldavFilter(caldavAccount);
+    }
 }
