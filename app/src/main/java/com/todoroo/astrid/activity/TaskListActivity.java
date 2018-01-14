@@ -62,6 +62,7 @@ import org.tasks.ui.DeadlineControlSet;
 import org.tasks.ui.EmptyTaskEditFragment;
 import org.tasks.ui.NavigationDrawerFragment;
 import org.tasks.ui.PriorityControlSet;
+import org.tasks.ui.TypeControlSet;
 
 import javax.inject.Inject;
 

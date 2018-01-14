@@ -18,7 +18,6 @@ import com.todoroo.astrid.gtasks.GtasksMetadata;
 import com.todoroo.astrid.gtasks.GtasksPreferenceService;
 
 import org.tasks.R;
-import org.tasks.activities.SupportGoogleTaskListPicker;
 import org.tasks.analytics.Tracker;
 import org.tasks.analytics.Tracking;
 import org.tasks.injection.FragmentComponent;

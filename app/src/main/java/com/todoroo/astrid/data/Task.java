@@ -8,6 +8,7 @@ package com.todoroo.astrid.data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
@@ -34,7 +35,10 @@ import static org.tasks.date.DateTimeUtils.newDateTime;
  *
  */
 @Entity(tableName = "tasks",
-        indices = @Index(name = "t_rid", value = "remoteId", unique = true))
+        indices = @Index(name = "t_rid", value = "remoteId", unique = true),
+        foreignKeys = @ForeignKey(entity = Task.class,
+                parentColumns = "_id",
+                childColumns = "parentID"))
 public class Task extends RemoteModel {
 
     // --- table and uri
@@ -50,6 +54,18 @@ public class Task extends RemoteModel {
     public Long id;
     public static final LongProperty ID = new LongProperty(
             TABLE, ID_PROPERTY_NAME);
+
+    /** The task parent */
+    @ColumnInfo(name = "parentID")
+    public Long parentID;
+    public static final LongProperty PARENT_ID = new LongProperty(
+            TABLE, "parentID");
+
+    /** Type of Task (see types flags) */
+    @ColumnInfo(name = "type")
+    public Integer type = TYPE_TASK;
+    public static final IntegerProperty TYPE = new IntegerProperty(
+            TABLE, "type");
 
     /** Name of Task */
     @ColumnInfo(name = "title")
@@ -185,6 +201,11 @@ public class Task extends RemoteModel {
     /** reminder mode five times (exclusive with non-stop) */
     public static final int NOTIFY_MODE_FIVE = 1 << 4;
 
+    // --- type settings (note: only projects can have child taks)
+
+    public static final int TYPE_TASK = 0;
+    public static final int TYPE_PROJECT = 1;
+
     // --- importance settings (note: importance > 3 are supported via plugin)
 
     public static final int IMPORTANCE_DO_OR_DIE = 0;
@@ -207,6 +228,7 @@ public class Task extends RemoteModel {
         defaultValues.put(HIDE_UNTIL.name, 0);
         defaultValues.put(COMPLETION_DATE.name, 0);
         defaultValues.put(DELETION_DATE.name, 0);
+        defaultValues.put(TYPE.name, TYPE_TASK);
         defaultValues.put(IMPORTANCE.name, IMPORTANCE_NONE);
         defaultValues.put(CALENDAR_URI.name, "");
         defaultValues.put(RECURRENCE.name, "");
@@ -553,6 +575,14 @@ public class Task extends RemoteModel {
 
     public String getCalendarURI() {
         return getValue(CALENDAR_URI);
+    }
+
+    public Integer getType() {
+        return getValue(TYPE);
+    }
+
+    public void setType(Integer type) {
+        setValue(TYPE, type);
     }
 
     public Integer getImportance() {

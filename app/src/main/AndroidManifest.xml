@@ -53,6 +53,11 @@
     <!-- *********************************** -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- *********************************** -->
+    <!-- add suprot to geofences -->
+    <!-- *********************************** -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <!-- ============================================== Exported Permissions = -->
 
     <!-- for v2 tasks provider -->

@@ -9,12 +9,6 @@ package com.todoroo.astrid.data;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.content.ContentValues;
-
-import com.todoroo.andlib.data.Property;
-import com.todoroo.andlib.data.Property.LongProperty;
-import com.todoroo.andlib.data.Property.StringProperty;
-import com.todoroo.andlib.data.Table;
 
 /**
  * Data Model which represents a user.

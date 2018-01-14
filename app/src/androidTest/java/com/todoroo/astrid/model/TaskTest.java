@@ -3,7 +3,6 @@ package com.todoroo.astrid.model;
 import android.content.ContentValues;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.todoroo.andlib.data.Property;
 import com.todoroo.astrid.dao.TaskDao;
 import com.todoroo.astrid.data.Task;
 
@@ -20,7 +19,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.tasks.Freeze.freezeClock;
-import static org.tasks.RemoteModelHelpers.asQueryProperties;
 import static org.tasks.RemoteModelHelpers.compareRemoteModel;
 import static org.tasks.time.DateTimeUtils.currentTimeMillis;
 

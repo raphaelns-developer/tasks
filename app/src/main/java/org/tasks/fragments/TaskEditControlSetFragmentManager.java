@@ -22,6 +22,7 @@ import org.tasks.ui.DeadlineControlSet;
 import org.tasks.ui.DescriptionControlSet;
 import org.tasks.ui.GoogleTaskListFragment;
 import org.tasks.ui.PriorityControlSet;
+import org.tasks.ui.TypeControlSet;
 import org.tasks.ui.TaskEditControlFragment;
 
 import java.util.ArrayList;
@@ -44,7 +45,9 @@ public class TaskEditControlSetFragmentManager {
             R.id.row_8,
             R.id.row_9,
             R.id.row_10,
-            R.id.row_11
+            R.id.row_11,
+            R.id.row_12
+
     };
 
     private static final int[] TASK_EDIT_CONTROL_SET_FRAGMENTS = new int[] {
@@ -54,6 +57,7 @@ public class TaskEditControlSetFragmentManager {
             DescriptionControlSet.TAG,
             CalendarControlSet.TAG,
             PriorityControlSet.TAG,
+            TypeControlSet.TAG,
             HideUntilControlSet.TAG,
             ReminderControlSet.TAG,
             FilesControlSet.TAG,

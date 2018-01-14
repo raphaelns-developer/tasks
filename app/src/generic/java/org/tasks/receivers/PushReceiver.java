@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 
-import com.todoroo.astrid.api.AstridApiConstants;
 import com.todoroo.astrid.data.Task;
 
 import org.tasks.injection.BroadcastComponent;

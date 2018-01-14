@@ -467,4 +467,5 @@
 	<string name="repeat_monthly_third_week">terceiro</string>
 	<string name="repeat_monthly_fourth_week">quarto</string>
 	<string name="repeat_monthly_last_week">último</string>
+    <string name="TEA_type_label">Tipo</string>
 </resources>

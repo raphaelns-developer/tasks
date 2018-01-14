@@ -6,13 +6,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import org.tasks.injection.DialogFragmentComponent;
-import org.tasks.time.DateTime;
 import org.tasks.R;
 import org.tasks.dialogs.DialogBuilder;
+import org.tasks.injection.DialogFragmentComponent;
 import org.tasks.injection.ForApplication;
 import org.tasks.injection.InjectingDialogFragment;
 import org.tasks.preferences.Preferences;
+import org.tasks.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;

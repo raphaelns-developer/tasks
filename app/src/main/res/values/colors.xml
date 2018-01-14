@@ -113,6 +113,9 @@
     <color name="importance_3">@color/blue_500</color>
     <color name="importance_4">@color/grey_500</color>
 
+    <color name="type_1">@color/green_500</color>
+    <color name="type_2">@color/grey_700</color>
+
     <color name="snackbar_text_color">#f4b400</color>
     <color name="snackbar_background">@color/grey_800</color>
     <color name="tag_color_none_background">#e1e1e1</color>

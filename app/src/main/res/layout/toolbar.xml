@@ -6,7 +6,17 @@
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
     android:elevation="@dimen/elevation_toolbar"
-    app:toolbarStyle="@style/Widget.AppCompat.Toolbar"
     app:popupTheme="@style/popup_overlay"
     app:theme="?attr/overlay_theme"
-    tools:ignore="UnusedAttribute" />
+    app:toolbarStyle="@style/Widget.AppCompat.Toolbar"
+    tools:ignore="UnusedAttribute" >
+
+    <LinearLayout
+        android:id="@+id/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />@+id/toolbar_item_container
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" />
+</android.support.v7.widget.Toolbar>

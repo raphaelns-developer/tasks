@@ -53,6 +53,12 @@
             android:textColor="?attr/asTextColor"
             android:textColorHint="?attr/asTextColorHint" />
 
+        <org.tasks.ui.TypeControlSet
+            android:id="@+id/type_button"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </RelativeLayout>
 
     <View style="@style/horizontal_divider" />

@@ -18,7 +18,6 @@ import org.tasks.injection.DialogFragmentComponent;
 import org.tasks.injection.InjectingDialogFragment;
 import org.tasks.themes.ThemeAccent;
 import org.tasks.themes.ThemeCache;
-import org.tasks.themes.ThemeColor;
 import org.tasks.ui.SingleCheckedArrayAdapter;
 
 import java.util.List;

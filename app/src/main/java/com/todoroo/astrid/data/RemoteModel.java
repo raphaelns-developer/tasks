@@ -6,17 +6,11 @@
 package com.todoroo.astrid.data;
 
 import android.content.ContentValues;
-import android.net.Uri;
 import android.text.TextUtils;
 
 import com.todoroo.andlib.data.AbstractModel;
 import com.todoroo.andlib.data.Property.StringProperty;
 import com.todoroo.andlib.data.TodorooCursor;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
 
 import timber.log.Timber;
 

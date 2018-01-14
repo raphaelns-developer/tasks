@@ -22,6 +22,7 @@ import org.tasks.ui.DescriptionControlSet;
 import org.tasks.ui.GoogleTaskListFragment;
 import org.tasks.ui.NavigationDrawerFragment;
 import org.tasks.ui.PriorityControlSet;
+import org.tasks.ui.TypeControlSet;
 
 import dagger.Subcomponent;
 
@@ -35,6 +36,8 @@ public interface FragmentComponent {
     void inject(NavigationDrawerFragment navigationDrawerFragment);
 
     void inject(PriorityControlSet priorityControlSet);
+
+    void inject(TypeControlSet typeControlSet);
 
     void inject(RepeatControlSet repeatControlSet);
 

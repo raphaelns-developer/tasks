@@ -30,10 +30,10 @@
 
     <ImageView
         android:id="@+id/button1"
-        android:tint="?attr/icon_tint"
-        android:src="@drawable/ic_close_24dp"
-        android:contentDescription="@string/remove"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="@string/remove"
+        android:src="@drawable/ic_close_24dp"
+        android:tint="?attr/icon_tint" />
 </LinearLayout>

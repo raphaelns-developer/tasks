@@ -47,6 +47,7 @@ import org.tasks.preferences.Preferences;
 import org.tasks.ui.GoogleTaskListFragment;
 import org.tasks.ui.MenuColorizer;
 import org.tasks.ui.TaskEditControlFragment;
+import org.tasks.ui.TypeControlSet;
 
 import java.util.List;
 
@@ -134,6 +135,10 @@ public final class TaskEditFragment extends InjectingFragment implements Toolbar
                 save();
             }
         });
+
+        LinearLayout layoutToolbar = (LinearLayout)
+                toolbar.findViewById(R.id.toolbar_layout);
+
         toolbar.inflateMenu(R.menu.menu_task_edit_fragment);
         toolbar.setOnMenuItemClickListener(this);
         MenuColorizer.colorToolbar(context, toolbar);
@@ -316,6 +321,8 @@ public final class TaskEditFragment extends InjectingFragment implements Toolbar
     public void onPriorityChange(int priority) {
         getEditTitleControlSet().setPriority(priority);
     }
+
+    public void onTypeChange(int type) { }
 
     public void onRepeatChanged(boolean repeat) {
         getEditTitleControlSet().repeatChanged(repeat);
