@@ -136,7 +136,7 @@ File %1$s contained %2$s.\n\n
     <!-- Task title hint (displayed when edit box is empty) -->
     <string name="TEA_title_hint">Task name</string>
 
-    <string name="TEA_type_label">Type</string>
+    <string name="TEA_type_label">Task Type</string>
 
     <!-- Task importance label -->
     <string name="TEA_importance_label">Priority</string>
@@ -170,6 +170,9 @@ File %1$s contained %2$s.\n\n
     <string name="due_time">Due time</string>
     <string name="day_before_due">Day before due</string>
     <string name="week_before_due">Week before due</string>
+
+    <string name="task_type">Task</string>
+    <string name="project_type">Project</string>
 
     <!-- Task edit control set descriptors -->
 

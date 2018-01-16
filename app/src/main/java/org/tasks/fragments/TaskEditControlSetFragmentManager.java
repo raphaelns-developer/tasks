@@ -34,6 +34,7 @@ public class TaskEditControlSetFragmentManager {
 
     public static final int[] TASK_EDIT_CONTROL_FRAGMENT_ROWS = new int[] {
             R.id.row_title,
+            R.id.row_type,
             R.id.comment_bar,
             R.id.row_1,
             R.id.row_2,
@@ -45,19 +46,18 @@ public class TaskEditControlSetFragmentManager {
             R.id.row_8,
             R.id.row_9,
             R.id.row_10,
-            R.id.row_11,
-            R.id.row_12
+            R.id.row_11
 
     };
 
     private static final int[] TASK_EDIT_CONTROL_SET_FRAGMENTS = new int[] {
             EditTitleControlSet.TAG,
+            TypeControlSet.TAG,
             DeadlineControlSet.TAG,
             TimerControlSet.TAG,
             DescriptionControlSet.TAG,
             CalendarControlSet.TAG,
             PriorityControlSet.TAG,
-            TypeControlSet.TAG,
             HideUntilControlSet.TAG,
             ReminderControlSet.TAG,
             FilesControlSet.TAG,
@@ -82,7 +82,8 @@ public class TaskEditControlSetFragmentManager {
         this.syncAdapterHelper = syncAdapterHelper;
         displayOrder = BeastModePreferences.constructOrderedControlList(preferences, activity);
         displayOrder.add(0, activity.getString(EditTitleControlSet.TAG));
-        displayOrder.add(1, activity.getString(CommentBarFragment.TAG));
+        displayOrder.add(1, activity.getString(TypeControlSet.TAG));
+        displayOrder.add(2, activity.getString(CommentBarFragment.TAG));
         String hideAlwaysTrigger = activity.getString(R.string.TEA_ctrl_hide_section_pref);
         for (numRows = 0 ; numRows < displayOrder.size() ; numRows++) {
             if (displayOrder.get(numRows).equals(hideAlwaysTrigger)) {
@@ -128,6 +129,8 @@ public class TaskEditControlSetFragmentManager {
         switch (fragmentId) {
             case EditTitleControlSet.TAG:
                 return new EditTitleControlSet();
+            case TypeControlSet.TAG:
+                return new TypeControlSet();
             case DeadlineControlSet.TAG:
                 return new DeadlineControlSet();
             case PriorityControlSet.TAG:

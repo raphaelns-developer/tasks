@@ -80,6 +80,7 @@ public class EditTitleControlSet extends TaskEditControlFragment {
         editText.setLines(1);
         editText.setMaxLines(Integer.MAX_VALUE);
         updateCompleteBox();
+
         return view;
     }
 

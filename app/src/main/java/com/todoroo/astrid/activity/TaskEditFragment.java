@@ -322,8 +322,6 @@ public final class TaskEditFragment extends InjectingFragment implements Toolbar
         getEditTitleControlSet().setPriority(priority);
     }
 
-    public void onTypeChange(int type) { }
-
     public void onRepeatChanged(boolean repeat) {
         getEditTitleControlSet().repeatChanged(repeat);
     }

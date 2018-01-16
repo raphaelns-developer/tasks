@@ -33,6 +33,11 @@
         <item>@string/pick_a_date_and_time</item>
     </string-array>
 
+    <string-array name="TEA_type">
+        <item>@string/task_type</item>
+        <item>@string/project_type</item>
+    </string-array>
+
     <string-array name="EPr_default_hideUntil">
         <item>@string/dont_hide</item>
         <item>@string/due_date</item>

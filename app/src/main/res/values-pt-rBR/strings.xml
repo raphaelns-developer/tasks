@@ -366,5 +366,5 @@
 	<string name="use_native_datetime_pickers">Usar calendário nativo</string>
 	<string name="dont_add_to_calendar">Não inserir no calendário</string>
 	<string name="default_calendar">Calendário padrão</string>
-    <string name="TEA_type_label">Tipo</string>
+    <string name="TEA_type_label">Tipo da Tarefa</string>
 </resources>

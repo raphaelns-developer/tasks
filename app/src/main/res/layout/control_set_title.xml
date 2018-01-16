@@ -32,32 +32,27 @@
 
         <EditText
             android:id="@+id/title"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/completeBox"
             android:layout_toEndOf="@id/completeBox"
-            android:gravity="start"
-            android:textAlignment="viewStart"
-            android:paddingLeft="0dp"
-            android:paddingStart="0dp"
-            android:paddingRight="@dimen/keyline_first"
-            android:paddingEnd="@dimen/keyline_first"
+            android:layout_toRightOf="@id/completeBox"
+            android:layout_weight="1"
             android:background="@null"
             android:freezesText="true"
+            android:gravity="start"
             android:hint="@string/TEA_title_hint"
             android:imeOptions="flagNoExtractUi"
             android:inputType="textCapSentences|textAutoCorrect"
             android:nextFocusLeft="@id/title"
             android:nextFocusUp="@id/title"
+            android:paddingEnd="@dimen/keyline_first"
+            android:paddingLeft="0dp"
+            android:paddingRight="@dimen/keyline_first"
+            android:paddingStart="0dp"
             android:scrollbars="vertical"
+            android:textAlignment="viewStart"
             android:textColor="?attr/asTextColor"
             android:textColorHint="?attr/asTextColorHint" />
-
-        <org.tasks.ui.TypeControlSet
-            android:id="@+id/type_button"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 

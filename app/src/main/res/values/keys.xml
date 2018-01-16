@@ -200,7 +200,6 @@
         <item>@string/TEA_ctrl_when_pref</item>
         <item>@string/TEA_ctrl_repeat_pref</item>
         <item>@string/TEA_ctrl_importance_pref</item>
-        <item>@string/TEA_ctrl_type_pref</item>
         <item>@string/TEA_ctrl_lists_pref</item>
     <item>@string/TEA_ctrl_google_task_list</item>
         <item>@string/TEA_ctrl_reminders_pref</item>

@@ -1,39 +1,116 @@
 package org.tasks.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.support.v7.widget.AppCompatButton;
-import android.widget.CompoundButton;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.todoroo.astrid.data.Task;
 
 import org.tasks.R;
+import org.tasks.injection.ForActivity;
+import org.tasks.injection.FragmentComponent;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by rapha on 13/01/2018.
- */
-
-public class TypeControlSet extends AppCompatButton {
+public class TypeControlSet extends TaskEditControlFragment {
     public static final int TAG = R.string.TEA_ctrl_type_pref;
+    private static final String EXTRA_TYPE = "extra_type";
 
-    private int type;
 
-    public TypeControlSet(Context context, Task task) {
-        super(context);
+    @Inject
+    @ForActivity
+    Context context;
 
-        updateIcon(task.getType());
+    @BindView(R.id.taskType)
+    ImageButton button;
+    private AlertDialog dialog;
+
+    private Integer type;
+
+    @Override
+    protected void inject(FragmentComponent component) {
+        component.inject(this);
     }
 
-    private void updateIcon(int type) {
-        setBackgroundResource(type == 0 ? R.drawable.ic_type_task_24dp : R.drawable.ic_type_project_24dp);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(getLayout(), null);
+        ButterKnife.bind(this, view);
+
+        if (savedInstanceState != null) {
+            type = savedInstanceState.getInt(EXTRA_TYPE);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setSingleChoiceItems(getResources().getStringArray(R.array.TEA_type), type,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        type = which;
+                        updateButton();
+                        dialog.dismiss();
+                    }
+                });
+        dialog = builder.create();
+        updateButton();
+
+        return view;
     }
 
-    @OnClick({R.id.type_button})
-    void onTypeChanged(CompoundButton button) {
-        openTypeDialog();
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(EXTRA_TYPE, type);
     }
 
-    private void openTypeDialog() {
+    @OnClick(R.id.taskType)
+    void onClick(View view) {
+        dialog.show();
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.control_set_type;
+    }
+
+    @Override
+    protected int getIcon() {
+        return -1;
+    }
+
+    @Override
+    public int controlId() {
+        return TAG;
+    }
+
+    @Override
+    public void initialize(boolean isNewTask, Task task) {
+        this.type = task.getType();
+    }
+
+    @Override
+    public boolean hasChanges(Task original) {
+        return type != original.getType();
+    }
+
+    @Override
+    public void apply(Task task) {
+        task.setType(this.type);
+    }
+
+    private void updateButton() {
+        button.setImageResource(type == 0 ? R.drawable.ic_type_task_24dp : R.drawable.ic_type_project_24dp);
     }
 }
