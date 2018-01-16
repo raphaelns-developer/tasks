@@ -36,9 +36,14 @@ import static org.tasks.date.DateTimeUtils.newDateTime;
  */
 @Entity(tableName = "tasks",
         indices = @Index(name = "t_rid", value = "remoteId", unique = true),
-        foreignKeys = @ForeignKey(entity = Task.class,
+        foreignKeys = {
+            @ForeignKey(entity = Task.class,
                 parentColumns = "_id",
-                childColumns = "parentID"))
+                childColumns = "parentID"),
+            @ForeignKey(entity = Section.class,
+                    parentColumns = "_id",
+                    childColumns = "sectionID")
+        })
 public class Task extends RemoteModel {
 
     // --- table and uri
@@ -60,6 +65,12 @@ public class Task extends RemoteModel {
     public Long parentID;
     public static final LongProperty PARENT_ID = new LongProperty(
             TABLE, "parentID");
+
+    /** The task section */
+    @ColumnInfo(name = "sectionID")
+    public Long sectionID;
+    public static final LongProperty SECTION_ID = new LongProperty(
+            TABLE, "sectionID");
 
     /** Type of Task (see types flags) */
     @ColumnInfo(name = "type")

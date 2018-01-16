@@ -26,7 +26,6 @@ public class TypeControlSet extends TaskEditControlFragment {
     public static final int TAG = R.string.TEA_ctrl_type_pref;
     private static final String EXTRA_TYPE = "extra_type";
 
-
     @Inject
     @ForActivity
     Context context;
@@ -36,6 +35,7 @@ public class TypeControlSet extends TaskEditControlFragment {
     private AlertDialog dialog;
 
     private Integer type;
+    private Boolean isNewTask;
 
     @Override
     protected void inject(FragmentComponent component) {
@@ -52,17 +52,19 @@ public class TypeControlSet extends TaskEditControlFragment {
             type = savedInstanceState.getInt(EXTRA_TYPE);
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setSingleChoiceItems(getResources().getStringArray(R.array.TEA_type), type,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        type = which;
-                        updateButton();
-                        dialog.dismiss();
-                    }
-                });
-        dialog = builder.create();
+        if(isNewTask) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setSingleChoiceItems(getResources().getStringArray(R.array.TEA_type), type,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            type = which;
+                            updateButton();
+                            dialog.dismiss();
+                        }
+                    });
+            dialog = builder.create();
+        }
         updateButton();
 
         return view;
@@ -77,7 +79,9 @@ public class TypeControlSet extends TaskEditControlFragment {
 
     @OnClick(R.id.taskType)
     void onClick(View view) {
-        dialog.show();
+        if(isNewTask) {
+            dialog.show();
+        }
     }
 
     @Override
@@ -98,6 +102,7 @@ public class TypeControlSet extends TaskEditControlFragment {
     @Override
     public void initialize(boolean isNewTask, Task task) {
         this.type = task.getType();
+        this.isNewTask = isNewTask;
     }
 
     @Override
