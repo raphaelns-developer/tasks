@@ -21,6 +21,7 @@ import org.tasks.activities.DatePickerActivity;
 import org.tasks.activities.FilterSelectionActivity;
 import org.tasks.activities.FilterSettingsActivity;
 import org.tasks.activities.GoogleTaskListSettingsActivity;
+import org.tasks.activities.SectionSettingsActivity;
 import org.tasks.activities.TagSettingsActivity;
 import org.tasks.activities.TimePickerActivity;
 import org.tasks.dashclock.DashClockSettings;
@@ -72,6 +73,8 @@ public interface ActivityComponent {
     void inject(FilterSettingsActivity filterSettingsActivity);
 
     void inject(TagSettingsActivity tagSettingsActivity);
+
+    void inject(SectionSettingsActivity sectionSettingsActivity);
 
     void inject(ShareLinkActivity shareLinkActivity);
 

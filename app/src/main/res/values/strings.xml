@@ -600,6 +600,7 @@ File %1$s contained %2$s.\n\n
    <!-- ========================================================== Extras == -->
 
     <string name="new_tag">Create new tag</string>
+  <string name="new_section">Create new section</string>
   <string name="new_list">Create new list</string>
 
     <!-- ========================================================== Filters == -->
@@ -728,6 +729,7 @@ File %1$s contained %2$s.\n\n
     <string name="geofence_radius_title">Radius (meters)</string>
     <string name="geofence_responsiveness_title">Response time (higher value conserves battery)</string>
     <string name="geolocation_reminders">Geolocation Reminders</string>
+    <string name="sections">Sections</string>
     <string name="tags">Tags</string>
     <string name="filters">Filters</string>
     <string name="date_shortcut_hour">For an hour</string>
@@ -742,6 +744,7 @@ File %1$s contained %2$s.\n\n
     <string name="discard_changes">Discard changes?</string>
     <string name="discard">Discard</string>
     <string name="tag_settings">Tag Settings</string>
+  <string name="section_settings">Section Settings</string>
   <string name="list_settings">List settings</string>
     <string name="delete">Delete</string>
   <string name="copy">Copy</string>
@@ -760,6 +763,7 @@ File %1$s contained %2$s.\n\n
     <string name="send_anonymous_statistics">Improve Tasks</string>
     <string name="send_anonymous_statistics_summary">Send anonymous usage statistics and crash reports to help improve Tasks. No personal data will be collected.</string>
     <string name="tag_already_exists">Tag already exists</string>
+    <string name="section_already_exists">Section already exists</string>
   <string name="name_cannot_be_empty">Name cannot be empty</string>
   <string name="no_title">(No title)</string>
   <string name="back_button_saves_task">Back button saves task</string>

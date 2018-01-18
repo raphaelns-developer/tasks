@@ -3,6 +3,8 @@ package org.tasks.filters;
 import com.todoroo.astrid.api.Filter;
 import com.todoroo.astrid.core.BuiltInFilterExposer;
 import com.todoroo.astrid.core.CustomFilterExposer;
+import com.todoroo.astrid.core.SectionFilterExposer;
+import com.todoroo.astrid.data.Section;
 import com.todoroo.astrid.gtasks.GtasksFilterExposer;
 import com.todoroo.astrid.tags.TagFilterExposer;
 import com.todoroo.astrid.timers.TimerFilterExposer;
@@ -17,18 +19,20 @@ public class FilterProvider {
     private final TimerFilterExposer timerFilterExposer;
     private final CustomFilterExposer customFilterExposer;
     private final TagFilterExposer tagFilterExposer;
+    private final SectionFilterExposer sectionFilterExposer;
     private final GtasksFilterExposer gtasksFilterExposer;
 
     @Inject
     public FilterProvider(BuiltInFilterExposer builtInFilterExposer, TimerFilterExposer timerFilterExposer,
                           CustomFilterExposer customFilterExposer, TagFilterExposer tagFilterExposer,
-                          GtasksFilterExposer gtasksFilterExposer) {
+                          SectionFilterExposer sectionFilterExposer, GtasksFilterExposer gtasksFilterExposer) {
 
         this.builtInFilterExposer = builtInFilterExposer;
         this.timerFilterExposer = timerFilterExposer;
         this.customFilterExposer = customFilterExposer;
         this.tagFilterExposer = tagFilterExposer;
         this.gtasksFilterExposer = gtasksFilterExposer;
+        this.sectionFilterExposer = sectionFilterExposer;
     }
 
     public Filter getMyTasksFilter() {
@@ -45,6 +49,10 @@ public class FilterProvider {
 
     public List<Filter> getTags() {
         return tagFilterExposer.getFilters();
+    }
+
+    public List<Filter> getSections() {
+        return sectionFilterExposer.getFilters();
     }
 
     public List<Filter> getGoogleTaskFilters() {

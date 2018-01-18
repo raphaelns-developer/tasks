@@ -16,6 +16,7 @@ import com.todoroo.andlib.data.AbstractModel;
 import com.todoroo.andlib.data.Table;
 import com.todoroo.andlib.utility.AndroidUtilities;
 import com.todoroo.astrid.data.Metadata;
+import com.todoroo.astrid.data.Section;
 import com.todoroo.astrid.data.StoreObject;
 import com.todoroo.astrid.data.TagData;
 import com.todoroo.astrid.data.Task;
@@ -49,6 +50,7 @@ import timber.log.Timber;
                 TaskListMetadata.class,
                 StoreObject.class,
                 Task.class,
+                Section.class,
                 Metadata.class,
                 Alarm.class,
                 Location.class
@@ -58,6 +60,7 @@ public abstract class Database extends RoomDatabase {
 
     public abstract NotificationDao notificationDao();
     public abstract TagDataDao getTagDataDao();
+    public abstract SectionDao getSectionDao();
     public abstract UserActivityDao getUserActivityDao();
     public abstract TaskAttachmentDao getTaskAttachmentDao();
     public abstract TaskListMetadataDao getTaskListMetadataDao();

@@ -15,6 +15,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.Provides;
+
 /**
  * Exposes filters based on tags
  *

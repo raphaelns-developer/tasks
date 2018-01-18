@@ -23,9 +23,12 @@ import com.todoroo.astrid.api.Filter;
 import com.todoroo.astrid.api.FilterListItem;
 import com.todoroo.astrid.api.GtasksFilter;
 import com.todoroo.astrid.api.PermaSql;
+import com.todoroo.astrid.api.SectionFilter;
 import com.todoroo.astrid.api.TagFilter;
+import com.todoroo.astrid.dao.SectionDao;
 import com.todoroo.astrid.dao.TagDataDao;
 import com.todoroo.astrid.dao.TaskDao;
+import com.todoroo.astrid.data.Section;
 import com.todoroo.astrid.data.TagData;
 import com.todoroo.astrid.data.Task;
 import com.todoroo.astrid.gtasks.GtasksList;
@@ -35,6 +38,7 @@ import com.todoroo.astrid.repeats.RepeatControlSet;
 import com.todoroo.astrid.service.TaskCreator;
 import com.todoroo.astrid.subtasks.SubtasksHelper;
 import com.todoroo.astrid.subtasks.SubtasksListFragment;
+import com.todoroo.astrid.subtasks.SubtasksSectionListFragment;
 import com.todoroo.astrid.subtasks.SubtasksTagListFragment;
 import com.todoroo.astrid.timers.TimerControlSet;
 
@@ -54,6 +58,7 @@ import org.tasks.preferences.DefaultFilterProvider;
 import org.tasks.preferences.Preferences;
 import org.tasks.receivers.RepeatConfirmationReceiver;
 import org.tasks.tasklist.GtasksListFragment;
+import org.tasks.tasklist.SectionListFragment;
 import org.tasks.tasklist.TagListFragment;
 import org.tasks.themes.Theme;
 import org.tasks.themes.ThemeCache;
@@ -93,6 +98,7 @@ public class TaskListActivity extends InjectingAppCompatActivity implements
     @Inject DefaultFilterProvider defaultFilterProvider;
     @Inject GtasksListService gtasksListService;
     @Inject TagDataDao tagDataDao;
+    @Inject SectionDao sectionDao;
     @Inject Theme theme;
     @Inject ThemeCache themeCache;
     @Inject SyncAdapterHelper syncAdapterHelper;
@@ -323,6 +329,14 @@ public class TaskListActivity extends InjectingAppCompatActivity implements
                         ? GtasksSubtaskListFragment.newGtasksSubtaskListFragment(gtasksFilter, list)
                         : GtasksListFragment.newGtasksListFragment(gtasksFilter, list);
             }
+        } else if (filter instanceof SectionFilter) {
+            SectionFilter sectionFilter = (SectionFilter) filter;
+            Section section = sectionDao.getSectionByID(sectionFilter.getID());
+            if (section != null) {
+                return preferences.getBoolean(R.string.p_manual_sort, false)
+                        ? SubtasksSectionListFragment.newSubtasksSectionListFragment(sectionFilter, section)
+                        : SectionListFragment.newSectionListFragment(sectionFilter, section);
+            }
         } else if (filter != null) {
             return subtasksHelper.shouldUseSubtasksFragmentForFilter(filter)
                     ? SubtasksListFragment.newSubtasksListFragment(filter)
@@ -530,7 +544,7 @@ public class TaskListActivity extends InjectingAppCompatActivity implements
         }
     }
 
-    private void finishActionMode() {
+    private void  finishActionMode() {
         if (actionMode != null) {
             actionMode.finish();
             actionMode = null;

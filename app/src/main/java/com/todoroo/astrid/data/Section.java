@@ -21,7 +21,7 @@ public class Section extends RemoteModel {
     // --- table and uri
 
     /** table for this model */
-    public static final Table TABLE = new Table("sections", Section.class);
+    public static final Table TABLE = new Table("section", Section.class);
 
     // --- properties
 
@@ -50,6 +50,24 @@ public class Section extends RemoteModel {
     public static final Property.IntegerProperty COLOR = new Property.IntegerProperty(
             TABLE, "color");
 
+    /** Unixtime Section was created */
+    @ColumnInfo(name = "created")
+    public Long created;
+    public static final Property.LongProperty CREATION_DATE = new Property.LongProperty(
+            TABLE, "created", Property.PROP_FLAG_DATE);
+
+    /** Unixtime Section was last touched */
+    @ColumnInfo(name = "modified")
+    public Long modified;
+    public static final Property.LongProperty MODIFICATION_DATE = new Property.LongProperty(
+            TABLE, "modified", Property.PROP_FLAG_DATE);
+
+    /** Unixtime Section was deleted. 0 means not deleted */
+    @ColumnInfo(name = "deleted")
+    public Long deleted = 0L;
+    public static final Property.LongProperty DELETION_DATE = new Property.LongProperty(
+            TABLE, "deleted", Property.PROP_FLAG_DATE);
+
     /** List of all properties for this model */
     public static final Property<?>[] PROPERTIES = generateProperties(Section.class);
 
@@ -60,7 +78,7 @@ public class Section extends RemoteModel {
 
     static {
         defaultValues.put(NAME.name, "");
-        defaultValues.put(COLOR.name, 0L);
+        defaultValues.put(COLOR.name, 0);
     }
 
     @Override
@@ -86,7 +104,7 @@ public class Section extends RemoteModel {
 
     @Override
     public long getId() {
-        return getIdHelper(ID);
+        return this.id;
     }
 
     // --- parcelable helpers
@@ -95,11 +113,42 @@ public class Section extends RemoteModel {
 
     // --- data access methods
 
-    public String getName() { return getValue(NAME); }
+    public String getName() { return this.name; }
 
-    public void setValue(String name) { setValue(NAME, name);}
+    public void setName(String name) { this.name = name; }
 
-    public Integer geColor() { return getValue(COLOR); }
+    public Integer getColor() { return this.color; }
 
-    public void setColor(Integer color) { setValue(COLOR, color);}
+    public void setColor(Integer color) { this.color = color;}
+
+    public Long getCreationDate() {
+        return this.created;
+    }
+
+    public void setCreationDate(Long creationDate) {
+        this.created = creationDate;
+    }
+
+    public void setModificationDate(Long modificationDate) {
+        this.modified = modificationDate;
+    }
+
+    public Long getDeletionDate() {
+        return this.deleted;
+    }
+
+    public void setDeletionDate(Long deletionDate) {
+        this.deleted = deletionDate;
+    }
+
+
+    /** Checks whether task is deleted. Will return false if DELETION_DATE not read */
+    public boolean isDeleted() {
+        // assume false if we didn't load deletion date
+        if(!containsValue(DELETION_DATE)) {
+            return false;
+        } else {
+            return getValue(DELETION_DATE) > 0;
+        }
+    }
 }
