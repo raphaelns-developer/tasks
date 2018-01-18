@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.support.v7.widget.Toolbar;
 
 import com.todoroo.andlib.sql.Criterion;
+import com.todoroo.andlib.sql.Field;
 import com.todoroo.astrid.activity.TaskListActivity;
 import com.todoroo.astrid.api.SectionFilter;
 import com.todoroo.astrid.api.TagFilter;
@@ -201,8 +202,8 @@ public class SectionSettingsActivity extends ThemedInjectingAppCompatActivity im
         } else if (hasChanges()) {
             section.setName(newName);
             section.setColor(selectedTheme);
+            sectionDao.rename(section.getId(), newName);
             sectionDao.persist(section);
-            sectionDao.update(Section.ID.eq(section.getId()), section);
             setResult(RESULT_OK, new Intent(ACTION_RELOAD).putExtra(TaskListActivity.OPEN_FILTER, new SectionFilter(section)));
         }
 

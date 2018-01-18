@@ -45,8 +45,4 @@ public abstract class SectionDao {
     public void createNew(Section section) {
         insert(section);
     }
-
-    public int update(Criterion where, Section template) {
-        return update(where, template);
-    }
 }

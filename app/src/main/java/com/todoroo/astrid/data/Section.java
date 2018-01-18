@@ -6,10 +6,15 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.content.ContentValues;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.todoroo.andlib.data.Property;
 import com.todoroo.andlib.data.Table;
 import com.todoroo.andlib.data.TodorooCursor;
+
+import org.tasks.backup.XmlReader;
+import org.tasks.backup.XmlWriter;
 
 
 @Entity(tableName = "section",
@@ -17,11 +22,7 @@ import com.todoroo.andlib.data.TodorooCursor;
                 parentColumns = "_id",
                 childColumns = "parentID")
         )
-public class Section extends RemoteModel {
-    // --- table and uri
-
-    /** table for this model */
-    public static final Table TABLE = new Table("section", Section.class);
+public class Section implements Parcelable {
 
     // --- properties
 
@@ -29,89 +30,64 @@ public class Section extends RemoteModel {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
     public Long id;
-    public static final Property.LongProperty ID = new Property.LongProperty(
-            TABLE, ID_PROPERTY_NAME);
 
     /** The color parent */
     @ColumnInfo(name = "parentID")
     public Long parentID;
-    public static final Property.LongProperty PARENT_ID = new Property.LongProperty(
-            TABLE, "parentID");
 
     /** Name of Section */
     @ColumnInfo(name = "name")
     public String name = "";
-    public static final Property.StringProperty NAME = new Property.StringProperty(
-            TABLE, "name");
 
     /** Color of Section */
     @ColumnInfo(name = "color")
-    public Integer color = 0;
-    public static final Property.IntegerProperty COLOR = new Property.IntegerProperty(
-            TABLE, "color");
+    public Integer color = -1;
 
     /** Unixtime Section was created */
     @ColumnInfo(name = "created")
     public Long created;
-    public static final Property.LongProperty CREATION_DATE = new Property.LongProperty(
-            TABLE, "created", Property.PROP_FLAG_DATE);
 
     /** Unixtime Section was last touched */
     @ColumnInfo(name = "modified")
     public Long modified;
-    public static final Property.LongProperty MODIFICATION_DATE = new Property.LongProperty(
-            TABLE, "modified", Property.PROP_FLAG_DATE);
 
     /** Unixtime Section was deleted. 0 means not deleted */
     @ColumnInfo(name = "deleted")
     public Long deleted = 0L;
-    public static final Property.LongProperty DELETION_DATE = new Property.LongProperty(
-            TABLE, "deleted", Property.PROP_FLAG_DATE);
-
-    /** List of all properties for this model */
-    public static final Property<?>[] PROPERTIES = generateProperties(Section.class);
-
-    // --- defaults
-
-    /** Default values container */
-    private static final ContentValues defaultValues = new ContentValues();
-
-    static {
-        defaultValues.put(NAME.name, "");
-        defaultValues.put(COLOR.name, 0);
-    }
-
-    @Override
-    public ContentValues getDefaultValues() {
-        return defaultValues;
-    }
 
     // --- data access boilerplate
 
-    public Section() {
-        super();
+    public Section() { }
+
+    @Ignore
+    public Section(XmlReader reader) {
+        reader.readLong("id", this::setId);
+        reader.readString("name", this::setName);
+        reader.readInteger("color", this::setColor);
+        reader.readLong("deleted", this::setDeleted);
     }
 
     @Ignore
-    public Section(TodorooCursor<Section> cursor) {
-        super(cursor);
+    private Section(Parcel parcel) {
+        id = parcel.readLong();
+        name = parcel.readString();
+        color = parcel.readInt();
+        deleted = parcel.readLong();
     }
 
-    @Ignore
-    public Section(Section section) {
-        super(section);
+    public void writeToXml(XmlWriter writer) {
+        writer.writeLong("id", id);
+        writer.writeString("name", name);
+        writer.writeInteger("color", color);
+        writer.writeLong("deleted", deleted);
     }
 
-    @Override
-    public long getId() {
-        return this.id;
+
+    public long getId() { return this.id; }
+
+    public void setId(long id) {
+        this.id = id;
     }
-
-    // --- parcelable helpers
-
-    public static final Creator<Task> CREATOR = new ModelCreator<>(Task.class);
-
-    // --- data access methods
 
     public String getName() { return this.name; }
 
@@ -133,22 +109,70 @@ public class Section extends RemoteModel {
         this.modified = modificationDate;
     }
 
-    public Long getDeletionDate() {
-        return this.deleted;
+    public Long getDeleted() {
+        return deleted;
     }
 
-    public void setDeletionDate(Long deletionDate) {
-        this.deleted = deletionDate;
+    public void setDeleted(long deleted) {
+        this.deleted = deleted;
     }
 
+    // --- parcelable helpers
 
-    /** Checks whether task is deleted. Will return false if DELETION_DATE not read */
-    public boolean isDeleted() {
-        // assume false if we didn't load deletion date
-        if(!containsValue(DELETION_DATE)) {
-            return false;
-        } else {
-            return getValue(DELETION_DATE) > 0;
+    public static final Creator<Section> CREATOR = new Creator<Section>() {
+        @Override
+        public Section createFromParcel(Parcel source) {
+            return new Section(source);
         }
+
+        @Override
+        public Section[] newArray(int size) {
+            return new Section[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(name);
+        dest.writeInt(color);
+        dest.writeLong(deleted);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Section section = (Section) o;
+
+        if (id != null ? !id.equals(section.id) : section.id != null) return false;
+        if (name != null ? !name.equals(section.name) : section.name != null) return false;
+        if (color != null ? !color.equals(section.color) : section.color != null) return false;
+        return deleted != null ? deleted.equals(section.deleted) : section.deleted == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (color != null ? color.hashCode() : 0);
+        result = 31 * result + (deleted != null ? deleted.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TagData{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", color=" + color +
+                ", deleted=" + deleted +
+                '}';
     }
 }
