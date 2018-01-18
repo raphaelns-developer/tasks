@@ -48,8 +48,6 @@ public class SectionFilter extends Filter {
 
     private static ContentValues getValuesForNewTask() {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("id", Task.SECTION_ID.name);
-
         return contentValues;
     }
 

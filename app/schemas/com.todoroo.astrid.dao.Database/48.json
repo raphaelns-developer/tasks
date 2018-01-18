@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 48,
-    "identityHash": "e14113a71d401ecb801f43a3105e51da",
+    "identityHash": "2125642ea045d1de3384e21732440b9e",
     "entities": [
       {
         "tableName": "notification",
@@ -527,7 +527,7 @@
       },
       {
         "tableName": "section",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `parentID` INTEGER, `name` TEXT, `color` INTEGER, `created` INTEGER, `modified` INTEGER, `deleted` INTEGER, FOREIGN KEY(`parentID`) REFERENCES `section`(`_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `parentID` INTEGER, `name` TEXT, `color` INTEGER, `deleted` INTEGER, FOREIGN KEY(`parentID`) REFERENCES `section`(`_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -550,18 +550,6 @@
           {
             "fieldPath": "color",
             "columnName": "color",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "created",
-            "columnName": "created",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "modified",
-            "columnName": "modified",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -782,7 +770,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e14113a71d401ecb801f43a3105e51da\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2125642ea045d1de3384e21732440b9e\")"
     ]
   }
 }

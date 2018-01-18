@@ -22,42 +22,76 @@ import org.tasks.backup.XmlWriter;
                 parentColumns = "_id",
                 childColumns = "parentID")
         )
-public class Section implements Parcelable {
+public class Section extends RemoteModel {
 
     // --- properties
+
+    public static final Table TABLE = new Table("section", Section.class);
 
     /** ID */
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
     public Long id;
+    public static final Property.LongProperty ID = new Property.LongProperty(
+            TABLE, ID_PROPERTY_NAME);
 
     /** The color parent */
     @ColumnInfo(name = "parentID")
     public Long parentID;
+    public static final Property.LongProperty PARENT_ID = new Property.LongProperty(
+            TABLE, "parentID");
 
     /** Name of Section */
     @ColumnInfo(name = "name")
     public String name = "";
+    public static final Property.StringProperty NAME = new Property.StringProperty(
+            TABLE, "name");
 
     /** Color of Section */
     @ColumnInfo(name = "color")
     public Integer color = -1;
-
-    /** Unixtime Section was created */
-    @ColumnInfo(name = "created")
-    public Long created;
-
-    /** Unixtime Section was last touched */
-    @ColumnInfo(name = "modified")
-    public Long modified;
+    public static final Property.IntegerProperty COLOR = new Property.IntegerProperty(
+            TABLE, "color");
 
     /** Unixtime Section was deleted. 0 means not deleted */
     @ColumnInfo(name = "deleted")
     public Long deleted = 0L;
+    public static final Property.LongProperty DELETION_DATE = new Property.LongProperty(
+            TABLE, "deleted", Property.PROP_FLAG_DATE);
+
+    /** List of all properties for this model */
+    public static final Property<?>[] PROPERTIES = generateProperties(Section.class);
+
+    // --- defaults
+
+    /** Default values container */
+    private static final ContentValues defaultValues = new ContentValues();
+
+    static {
+        defaultValues.put(NAME.name, "");
+        defaultValues.put(COLOR.name, -1);
+    }
+
+    @Override
+    public ContentValues getDefaultValues() {
+        return defaultValues;
+    }
 
     // --- data access boilerplate
 
-    public Section() { }
+    public Section() {
+        super();
+    }
+
+    @Ignore
+    public Section(TodorooCursor<Section> cursor) {
+        super(cursor);
+    }
+
+    @Ignore
+    public Section(Section section) {
+        super(section);
+    }
 
     @Ignore
     public Section(XmlReader reader) {
@@ -75,19 +109,19 @@ public class Section implements Parcelable {
         deleted = parcel.readLong();
     }
 
-    public void writeToXml(XmlWriter writer) {
+    public void Section(XmlWriter writer) {
         writer.writeLong("id", id);
         writer.writeString("name", name);
         writer.writeInteger("color", color);
         writer.writeLong("deleted", deleted);
     }
 
+    // --- data access methods
 
+    @Override
     public long getId() { return this.id; }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
     public String getName() { return this.name; }
 
@@ -97,18 +131,6 @@ public class Section implements Parcelable {
 
     public void setColor(Integer color) { this.color = color;}
 
-    public Long getCreationDate() {
-        return this.created;
-    }
-
-    public void setCreationDate(Long creationDate) {
-        this.created = creationDate;
-    }
-
-    public void setModificationDate(Long modificationDate) {
-        this.modified = modificationDate;
-    }
-
     public Long getDeleted() {
         return deleted;
     }
@@ -116,8 +138,6 @@ public class Section implements Parcelable {
     public void setDeleted(long deleted) {
         this.deleted = deleted;
     }
-
-    // --- parcelable helpers
 
     public static final Creator<Section> CREATOR = new Creator<Section>() {
         @Override
@@ -174,5 +194,15 @@ public class Section implements Parcelable {
                 ", color=" + color +
                 ", deleted=" + deleted +
                 '}';
+    }
+
+    /** Checks whether section is deleted. Will return false if DELETION_DATE not read */
+    public boolean isDeleted() {
+        // assume false if we didn't load deletion date
+        if(!containsValue(DELETION_DATE)) {
+            return false;
+        } else {
+            return getValue(DELETION_DATE) > 0;
+        }
     }
 }
