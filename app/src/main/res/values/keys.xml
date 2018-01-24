@@ -177,6 +177,7 @@
     <string name="TEA_ctrl_when_pref">TEA_ctrl_when_pref</string>
     <string name="TEA_ctrl_repeat_pref">TEA_ctrl_repeat_pref</string>
     <string name="TEA_ctrl_type_pref">TEA_ctrl_type_pref</string>
+  <string name="TEA_ctrl_section_pref">TEA_ctrl_section_pref</string>
     <string name="TEA_ctrl_importance_pref">TEA_ctrl_importance_pref</string>
     <string name="TEA_ctrl_lists_pref">TEA_ctrl_lists_pref</string>
     <string name="TEA_ctrl_notes_pref">TEA_ctrl_notes_pref</string>

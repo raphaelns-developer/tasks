@@ -524,6 +524,10 @@ public class Task extends RemoteModel {
         return getValue(UUID);
     }
 
+    public long getSectionID() { return getValue(SECTION_ID); }
+
+    public void setSectionID(long id) { setValue(SECTION_ID, id); }
+
     public String getTitle() {
         return getValue(TITLE);
     }

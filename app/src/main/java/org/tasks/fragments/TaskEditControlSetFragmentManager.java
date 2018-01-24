@@ -22,6 +22,7 @@ import org.tasks.ui.DeadlineControlSet;
 import org.tasks.ui.DescriptionControlSet;
 import org.tasks.ui.GoogleTaskListFragment;
 import org.tasks.ui.PriorityControlSet;
+import org.tasks.ui.SectionControlSet;
 import org.tasks.ui.TypeControlSet;
 import org.tasks.ui.TaskEditControlFragment;
 
@@ -46,13 +47,15 @@ public class TaskEditControlSetFragmentManager {
             R.id.row_8,
             R.id.row_9,
             R.id.row_10,
-            R.id.row_11
+            R.id.row_11,
+            R.id.row_12
 
     };
 
     private static final int[] TASK_EDIT_CONTROL_SET_FRAGMENTS = new int[] {
             EditTitleControlSet.TAG,
             TypeControlSet.TAG,
+            SectionControlSet.TAG,
             DeadlineControlSet.TAG,
             TimerControlSet.TAG,
             DescriptionControlSet.TAG,
@@ -131,6 +134,8 @@ public class TaskEditControlSetFragmentManager {
                 return new EditTitleControlSet();
             case TypeControlSet.TAG:
                 return new TypeControlSet();
+            case SectionControlSet.TAG:
+                return new SectionControlSet();
             case DeadlineControlSet.TAG:
                 return new DeadlineControlSet();
             case PriorityControlSet.TAG:
